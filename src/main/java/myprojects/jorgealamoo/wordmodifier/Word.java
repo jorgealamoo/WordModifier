@@ -7,38 +7,58 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Word {
-    private final XWPFDocument document;
-    private final String filePath;
+    private XWPFDocument document;
+    private List<String> paragraphs;
 
-    public Word(String filePath) throws IOException {
-        this.document = new XWPFDocument(new FileInputStream(filePath));
-        this.filePath = filePath;
+    public Word() {
+        this.paragraphs = new ArrayList<>();
+    }
+
+    public void setDocument(XWPFDocument document) {
+        this.document = document;
     }
 
     public XWPFDocument getDocument() {
         return document;
     }
 
-    public List<XWPFParagraph> getParagraphs(){
-        return this.document.getParagraphs();
+    public List<String> getParagraphs(){
+        return paragraphs;
+    }
+
+    public void setParagraphs(List<String> paragraphs) {
+        this.paragraphs = paragraphs;
     }
 
     public void addParagraph(String newParagraph){
-        XWPFParagraph paragraph = this.document.createParagraph();
-        paragraph.createRun().setText(newParagraph);
+        this.paragraphs.add(newParagraph);
+        if (document != null){
+            XWPFParagraph paragraph = document.createParagraph();
+            paragraph.createRun().setText(newParagraph);
+        }
     }
 
-    public void save() throws IOException {
-        try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
-            this.document.write(outputStream);
+    public void save(String newFilePath) throws IOException {
+        try (FileOutputStream outputStream = new FileOutputStream(newFilePath)) {
+            if (document == null){
+                document = new XWPFDocument();
+                for (String paragraphText : paragraphs){
+                    XWPFParagraph paragraph = document.createParagraph();
+                    paragraph.createRun().setText(paragraphText);
+                }
+            }
+            document.write(outputStream);
         }
     }
 
     public void close() throws IOException {
-        this.document.close();
+        if (document != null) {
+            this.document.close();
+        }
     }
 
 }
