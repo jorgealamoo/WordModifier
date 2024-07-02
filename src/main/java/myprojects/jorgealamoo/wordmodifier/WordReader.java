@@ -1,22 +1,35 @@
 package myprojects.jorgealamoo.wordmodifier;
 
+
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WordReader {
-    public static void main(String[] args) {
-        try (FileInputStream fis = new FileInputStream("E:\\Usuario\\Documents\\Otros\\documento.docx");
-        XWPFDocument document = new XWPFDocument(fis)) {
+    private final XWPFDocument document;
 
-            for (XWPFParagraph paragraph : document.getParagraphs()) {
-                System.out.println(paragraph.getText());
-            }
+    public WordReader(String filePath) throws IOException {
+        this.document = new XWPFDocument(new FileInputStream(filePath));
+    }
 
-        } catch (IOException e) {
-            System.out.println("Error. Document can´t be read");
+    public Word read(){
+        Word word = new Word(document);
+        List<XWPFParagraph> xwpfParagraphs = document.getParagraphs();
+        List<String> paragraphs = new ArrayList<>();
+        for (XWPFParagraph paragraph: xwpfParagraphs){
+            paragraphs.add(paragraph.getText());
         }
+        word.setParagraphs(paragraphs);
+
+        return word;
+    }
+
+    public void close() throws IOException {
+        document.close();
     }
 }
