@@ -5,7 +5,6 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,4 @@ public class WordReader {
         return word;
     }
 
-    public void close() throws IOException {
-        document.close();
-    }
 }

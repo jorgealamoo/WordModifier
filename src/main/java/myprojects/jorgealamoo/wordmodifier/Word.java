@@ -3,8 +3,6 @@ package myprojects.jorgealamoo.wordmodifier;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +40,7 @@ public class Word {
     public void save(String newFilePath) throws IOException {
         try (FileOutputStream outputStream = new FileOutputStream(newFilePath)) {
             this.document.write(outputStream);
+            System.out.println("El documento se ha modificado correctamente.");
         }
     }
 

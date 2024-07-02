@@ -7,7 +7,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         WordReader reader = new WordReader("E:\\Usuario\\Documents\\Otros\\documento.docx");
         Word word = reader.read();
-        reader.close();
 
         List<String> paragraphs = word.getParagraphs();
         for (String paragraph : paragraphs){
